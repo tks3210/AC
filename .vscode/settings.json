@@ -1,0 +1,6 @@
+{
+    "runner.languageMap": {
+        "c": "C:/VisualCodeRunner/crun_gcc.bat",
+        "cpp": "C:/VisualCodeRunner/cpprun.bat"
+    }
+}
