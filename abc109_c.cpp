@@ -1,14 +1,7 @@
 #include <iostream>
 using namespace std;
 
-int gcd(int x, int y){
-    int z = 0;
-    while((z = x % y) != 0){
-        x = y;
-        y = z;
-    }
-    return y;
-}
+int gcd(int x, int y){ return y?gcd(y, x%y):x;}
 
 int main(){
     int N, X;

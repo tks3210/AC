@@ -1,34 +1,47 @@
 #include <iostream>
 #include <string>
-#include <algorithm>
+#include <set>
 using namespace std;
+
+char w_end;
+set<string> M;
+
+bool check(int k, string s){
+    int len = s.length();
+    if (k == 0){
+        w_end = s[len -1];
+        M.insert(s);
+        return true;
+    }
+    if (M.count(s) != 0){
+        return false;
+    }
+    M.insert(s);
+    char w_top = s[0];
+    if (w_top != w_end){
+        return false;
+    }
+    w_end = s[len-1];
+    return true;
+}
 
 int main(){
     int N;
-    int flag = 0;
-    string sent[100];
+    bool ans = true;
     cin >> N;
-
+    
     for (int i = 0; i < N ; i++) {
-        cin >> sent[i];
-    }
-    for (int i = 1; i < N ; i++){
-        int ssize = sent[i-1].size();
-        if(sent[i-1][ssize-1] != sent[i][0]){
-            flag = 1;
+        string sent;
+        cin >> sent;
+        if (ans && !check(i, sent)){
+            ans = false;
         }
-    }
-    sort(sent, sent+N);
-    for (int i = 1; i < N;i++){
-        if(sent[i-1] == sent[i]){
-            flag = 1;
-        }
-    }
-    if (flag == 1){
-        cout << "No" << endl;
-    } else {
-        cout << "Yes" << endl;
     }
 
-   
+    // if (ans == false){
+    //     cout << "No" << endl;
+    // } else {
+    //     cout << "Yes" << endl;
+    // }
+    cout << (ans ? "Yes\n" :"No\n");
 } 
