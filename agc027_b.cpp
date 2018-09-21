@@ -2,37 +2,41 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-
-vector<int> x;
-
-
+ 
+ 
 int main(){
-    int N,X;
+    int N;
+    unsigned long long X;
+    unsigned long long sum[200010];
     cin >> N >> X;
-    for (int i = 0; i < N; i++){
-        int tmp;
+    for (int i = 1; i <= N; i++){
+        //仮想配列かどうかはスピードに影響を与えない。
+        unsigned long long tmp;
         cin >> tmp;
-        x.push_back(tmp);
+        //後々の計算量削減のため、この時点で和を取っておく。
+        sum[i] = sum[i-1] + tmp;
     }
-    sort(x.begin(),x.end(),greater<int>());
-    int br_num = 0;
-    int energy = 0;
-    energy += 5 * x[0] + 2 * X;
-    br_num = 2;
-    for (int i=1; i < x.size(); i++){
-        //pick or nopick
-        //printf("buf%d\n",energy);
-        int pick = ( br_num * 2 + 1 ) * x[i] + X;
-        int nopick = 5 * x[i] + 2*X;
-        if (pick <= nopick){
-            //pick
-            energy += pick;
-            br_num++;
-        } else {
-            //nopick
-            energy += nopick;
-            br_num=1;
+    unsigned long long min_energy = 0;
+    for (int k=1; k <= N / 2 + 1; k++){
+        unsigned long long energy = 0;
+        //weightをint型にしたらオーバーフローした。なぜ？
+        int weight = 5;
+        for (int i=0; i <= N/k; i++){
+            if (i == 0){
+                weight = 5;
+            } else {
+                weight = 5 + 2*(i - 1);
+            }
+            int M = N - k*i;
+            int m = (M - k) >= 0 ? M - k : 0L;
+            energy += (sum[M] - sum[m]) * weight;
+            //printf("%d,%d,%llu\n",k,weight,sum[M]-sum[m]);
+        }
+        energy += (N + k)*X;
+        if (k == 1) min_energy = energy;
+        if (min_energy >= energy){
+            min_energy = energy;
         }
     }
-    printf("%d",energy);
+    printf("%llu",min_energy);
 }
