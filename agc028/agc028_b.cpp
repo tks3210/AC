@@ -44,7 +44,7 @@ int main(){
     }
     
     int nex = ncalc(N);
-    printf("%d\n",nex);
+    //printf("%d\n",nex);
     int sum = 0;
     for(int i = 2; i <= N; i++)
     {
