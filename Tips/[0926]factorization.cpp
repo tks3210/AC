@@ -2,23 +2,27 @@
 #include <vector>
 using namespace std;
 
-vector<int> soinsu;
-int main(){
-    int N;
-    cin >> N;
 
-    int amari = N;
-    
-    for(int i = 2; i*i <= amari; i++)
+template<class X> void factorization(X input, vector<X>& Pnumber){
+    for(X i = 2; i*i <= input; i++)
     {
-        if (amari % i == 0){
-            while (amari % i == 0){
-                amari /= i;
-                soinsu.push_back(i);
+        if (input % i == 0){
+            while (input % i == 0){
+                input /= i;
+                Pnumber.push_back(i);
             }
         }
     }
-    if (amari != 1) soinsu.push_back(amari);
+    if (input != 1) Pnumber.push_back(input);
+}
 
-    for (auto i:soinsu) cout << i << endl;
+int main(){
+    long long N;
+    vector<long long> Pnumber;
+    cout << "Input>";
+    cin >> N;
+
+    factorization(N, Pnumber);
+    cout << "Output>";
+    for (auto i: Pnumber) cout << i << " ";
 }

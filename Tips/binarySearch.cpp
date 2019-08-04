@@ -3,57 +3,47 @@ using namespace std;
 
 typedef long long ll;
 
-//ソート済の配列に対して、クエリの値がどこに当たるか調査。
-//配列とクエリを入力、queryより小さい数字の最大値の位置を出力として返す。
-//queryより小さい数字がない場合は-1を返す。
-int func_descending(vector<int> input_arr, int query)
-{
-    int l, r, mid;
-    if (query <= input_arr[0]) return -1;
-    //二分探索：開始位置は、l:0, r:末尾
-    l = 0, r = input_arr.size() - 1;
-    while(l <= r){
-        mid = (l + r) / 2;
-        if ((query > input_arr[mid]) && 
-            ((mid == input_arr.size() - 1) || (query <= input_arr[mid + 1]))) {return mid;}
-        else if (query <= input_arr[mid]){ r = mid;}
-        else{ l = mid + 1;} //lの更新時は+1にしないと狭まらない
+
+/* 判定式を指定できるめぐる式二分探索 */
+/* input: arr:行列、callback:判定方法の関数ポインタ、 userQuery:判定に使用するための引数(省略可)*/
+/* output: 条件を満たす要素の最小値(全て満たさなければ要素サイズを返す) */
+/* 制約事項: 行列のある要素に対して判定方法callbackを満たすとき、それより大きな要素も判定方法を満たす必要がある。 */
+template<class X> int binarySearch_latest(vector<X> arr, bool (*callback)(X, int), X userQuery = 0) {
+    int ng = -1;
+    int ok = (int)arr.size();
+    while(abs(ok - ng) > 1){
+        int mid = (ok + ng) / 2;
+        if (callback(arr[mid], userQuery)){ ok = mid; } else { ng = mid; }
     }
+    return ok;
 }
 
-//ソート済の配列に対して、クエリの値がどこに当たるか調査。
-//配列とクエリを入力、queryより小さい数字の最大値の位置を出力として返す。
-//queryより小さい数字がない場合は-1を返す。
-int func_ascending(vector<int> input_arr, int query)
-{
-    int l, r, mid;
-    if (query <= input_arr[input_arr.size() - 1]) return -1;
-    //二分探索：開始位置は、l:0, r:末尾
-    l = 0, r = input_arr.size() - 1;
-    while(l <= r){
-        mid = (l + r) / 2;
-        if ((query > input_arr[mid]) && 
-            ((mid == 0) || (query <= input_arr[mid - 1]))) {return mid;}
-        else if (query <= input_arr[mid]){ l = mid + 1;}
-        else{ r = mid;}
-    }
+/* 判定方法1 */
+/* input: arrValue:行列の要素、user:任意に指定した引数*/
+/* 指定した値userがarrValueより小さいとき真を返す */
+template<class X> bool judge1(X arrValue, int user){
+    return (arrValue >= (X)user);
+}
+
+/* 判定方法2 */
+/* input: arrValue:行列の要素、user:任意に指定した引数*/
+/* 指定した値userの二乗がarrValueより小さいとき真を返す */
+template<class X> bool judge2(X arrValue, int user){
+    return (arrValue >= ((X)user*(X)user));
 }
 
 
 int main(){
-    int org_data[] = {2, 4, 6, 8, 10, 10, 12};
-    vector<int> a(org_data, org_data + 7);
-
-    for (int i = 0; i < 15; i++)
+    int a_data[] = {2, 4, 6, 8, 10, 45};
+    vector<int> a(a_data, a_data + 6);
+    for (int i = 0; i < 10; i++)
     {
-        printf("[%d] => %d\n",i, func_descending(a, i));
+        //printf("[%d] => %d  ",i, binarySearch_latest(a, judge1, i));
+        //printf("[%d] => %d  \n",i, binarySearch_latest(a, judge2, i));
+        int ans = 0;
+        if ((ans = a[binarySearch_latest(a, judge1, i)]) != i){
+            ans = -1;
+        }
+        printf("[%d] => %d  \n",i, ans);        
     }
-
-    sort(a.begin(), a.end(), greater<int>());
-
-    for (int i = 0; i < 15; i++)
-    {
-        printf("[%d] => %d\n",i, func_ascending(a, i));
-    }
- 
 }
