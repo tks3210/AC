@@ -8,9 +8,42 @@ typedef long long ll;
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    int n, m;
+    cin >> n >> m;
+    string s;
+    cin >> s;
+
+    reverse(s.begin(), s.end());
+
+    vector<int> ans;
+
+    int itr = 0;
+    while(1){
+        //cout << itr << endl;
+        if ((itr + m) >= n){
+            ans.push_back(n - itr);
+            break;
+        } 
+        bool gameover = true;
+        for (int i = m; i > 0; i--)
+        {
+            if (s[itr + i] == '0'){
+                ans.push_back(i);
+                itr += i;
+                gameover = false;
+                break;
+            }
+        }
+        
+        if (gameover == true){
+            cout << "-1" << endl;
+            break;
+        }
+
+    }
+
+    reverse(ans.begin(), ans.end());
+
+    show(ans);
 }
 
