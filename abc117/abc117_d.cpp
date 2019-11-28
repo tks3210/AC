@@ -7,14 +7,9 @@ typedef long long ll;
 int onecnt[40] = {0};
 int zerocnt[40] = {0};
 ll allset[40] = {0};
+bool kbit[40] = {0};
 
-ll calc_max(int num, int bit)
-{
 
-    ll tmp = 0;
-    int next_num = num - (1 << bit);
-    return max(calc_max(next_num, bit-1) + onecnt[bit]*(1<<bit), allset[bit - 1]);
-}
 
 int main()
 {
@@ -43,6 +38,15 @@ int main()
         }
     }
 
+    int kt = k;
+    for(int i = 0; kt != 0; i++)
+    {
+        kbit[i] = (kt % 2 == 1) ? 1 : 0;
+        kt >>= 1;
+    }
+    
+
+
     for (int i = 0; i < 40; i++)
     {
         //cout << onecnt[i] << " ";
@@ -50,33 +54,24 @@ int main()
 
     for (int i = 0; i < 40; i++)
     {
-        if (i == 0)
-        {
-            if (onecnt[i] < zerocnt[i])
-            {
-                allset[i] = zerocnt[i];
-            }
-            else
-            {
-                allset[i] = onecnt[i];
-            }
-            continue;
-        }
-        if (onecnt[i] < zerocnt[i])
-        {
-            allset[i] = zerocnt[i] * (1 << i) + allset[i - 1];
-        }
-        else
-        {
-            allset[i] = onecnt[i] * (1 << i) + allset[i - 1];
-        }
+        allset[i] = (onecnt[i] > zerocnt[i]) ? onecnt[i]: zerocnt[i];
+        allset[i] *= (1 << i);
+        if(i != 0) allset[i] += allset[i-1];
     }
 
-    int kbit = 0;
-    while (k != 0)
+
+
+    for(int i = 39; i >= 0; i--)
     {
-        k >>= 1;
-        kbit++;
+        for(int j = 39; j >= 0; j--)
+        {
+            if(j > i){
+                
+            }
+
+        }
+        
     }
-    cout << calc_max(k, kbit) << endl;
+    
+
 }

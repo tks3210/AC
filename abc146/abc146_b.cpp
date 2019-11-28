@@ -9,8 +9,18 @@ typedef long long ll;
 int main()
 {
     int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    cin >> n;  
+    string s;
+    cin >> s;
+    rep(i, s.size()){
+        s[i] = s[i] + (char)n;
+        if (s[i] > 'Z'){
+            s[i] -= 'Z';
+            s[i] += 'A' - 1;
+        }
+    }
+
+    cout << s << endl;
+
 }
 

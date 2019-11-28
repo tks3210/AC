@@ -10,7 +10,13 @@ int main()
 {
     int n;
     cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    ll sum = 0;
+    vector<ll> a;
+    rep(i, n){ ll tmp; cin >> tmp; sum += tmp; a.push_back(sum);}
+
+    ll mindif = 1e10;
+    rep(i, n){ mindif = min(mindif, abs(a[i]*2 - sum));}
+
+    printf("%lld\n", mindif);
 }
 
