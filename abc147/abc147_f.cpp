@@ -4,67 +4,61 @@ using namespace std;
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
 #define show(x) for(auto i: x){cout << i << " ";}
 typedef long long ll;
+typedef pair<ll, ll> P;
 
-bool cmp(const pair<ll, bool> &a, const pair<ll, bool> &b){
-    if (a.first != b.first){
-        return a.first < b.first;
-    } else {
-        return a.second > b.second;
-    }
-}
-
+const ll INF = 1ll < 60;
 int main()
 {
     ll n, x, d;
     cin >> n >> x >> d;
-    x = abs(x); d = abs(d);
-    int minus = 1;
-    if (x*d < 0) minus = -1;
-    vector<vector<pair<ll, bool>>> range(d); 
 
-    range[0].push_back(make_pair(0, true));
-    range[0].push_back(make_pair(0, false));
-    rep(i, n){
-        int N = i+1;
-        int plus = (N / d) * x * minus;
-        range[N%d].push_back(make_pair(((N-1) * N / 2) + plus, true));
-        range[N%d].push_back(make_pair(((n * N) - (N*(N + 1)/2)) + plus, false));
-    }
-
-
-    rep(i, d){
-        sort(range[i].begin(), range[i].end(), cmp);
-            // for (auto num: range[i])
-            // {
-            //     cout << num.first << " ";
-            // }
-            // cout << endl;
-    }
-
-    int ans = 0;
-    rep(i, d){
-        int cnt = 0;
-        int bef = 0;
-        for (auto num: range[i])
-        {
-            if (num.second == true){
-                if (cnt == 0){
-                    bef = num.first;
-                }
-                cnt++;
-            } else {
-                cnt--;
-            }
-
-            if(cnt == 0){
-                ans += num.first - bef + 1;
-            }
+    if (d == 0){
+        if (x == 0){
+            cout << 1 << endl;
+        } else {
+            cout << n + 1 << endl;
         }
-        cout << ans << endl;
-
+        return 0;
     }
 
+    map<ll, vector<P>> mp;
+    // iX + jD
+    rep(i, n + 1){
+        ll start = i*x;
+        ll left = (ll)i*(i-1)/2;
+        ll len = (ll)i*(n-i) + 1;
+        start += left*d;     // iX + jD(j:min)
+        mp[(start%d + d)%d].emplace_back(start, len);      //map
+        //printf("%d %lld %lld %lld\n", i,(start%d + d)%d, start, len); 
+    }
 
+    ll ans = 0;
+    for (auto p: mp){
+        
+        auto stra = p.second;
+        for (auto& i : stra){
+            i.first = (i.first - p.first) / d;
+        }
+        // int m = stra.size();
+        // rep(i,m) stra[i].first = (stra[i].first-p.first)/d;
+
+        vector<P> range;
+        for (auto i : stra){
+            range.emplace_back(i.first, 1);
+            range.emplace_back(i.first + i.second, -1);
+        }
+
+        sort(range.begin(), range.end());
+        ll cnt = 0; 
+        ll bef = -INF;
+        for (auto i : range){
+            //printf("%lld, %lld\n",i.first, i.second);
+            if (cnt) ans += i.first - bef;
+            bef = i.first;
+            cnt += i.second;
+
+        }
+    }
+    cout << ans << endl;
+    return 0;
 }
-
-
