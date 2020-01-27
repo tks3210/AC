@@ -7,79 +7,68 @@ typedef long long ll;
 
 struct Edge{
     int to, id;
-    Edge(int to, int id): to(to), id(id) {}
+    Edge(int to, int id): to(to), id(id){} 
 };
-vector<vector<Edge>> a(50);
 
-/* 目的地までの経路を返す */
-bool fds(int parent, int to, int from, vector<int>& root){
-    if (from == to){
+vector<Edge> edge[52];
+//vector<int> a    :int要素を格納するまっさらな動的配列
+//vector<int> a(5) :予め5個のint要素を確保した動的配列
+//vector<int> a[5] :まっさらな動的配列を5つ確保している静的配列
+
+bool fds(vector<int>& root, int now, int targ, int parent){
+    if (targ == now){
         return true;
     }
-    for (auto edge : a[from])
-    {
-        if (parent == edge.to) continue;
-        if (fds(from, to, edge.to, root)){
-            root.push_back(edge.id);
+    for (auto next : edge[now]){
+        if (next.to == parent) continue;
+        if (fds(root, next.to, targ, now)){
+            root.push_back(next.id);
             return true;
         }
     }
     return false;
 }
 
-int main()
-{
-    int n;
+int main(){
+    int n, m;
     cin >> n;
-    rep(i, n-1){ 
-        int tmp1, tmp2; cin >> tmp1 >> tmp2; 
-        tmp1--; tmp2--;
-        a[tmp1].emplace_back(tmp2, i);
-        a[tmp2].emplace_back(tmp1, i);
-    }
-    int m;
+    
+    rep(i, n-1){
+        int tmpa, tmpb; cin >> tmpa >> tmpb;
+        tmpa--; tmpb--;
+        edge[tmpa].emplace_back(tmpb, i);
+        edge[tmpb].emplace_back(tmpa, i);
+    }    
+
     cin >> m;
-    vector<pair<int, int>> u;
+    vector<ll> bitmap_range(m);
     rep(i, m){
-        int tmp1, tmp2; cin >> tmp1 >> tmp2; 
-        tmp1--; tmp2--;
-        u.emplace_back(tmp1, tmp2);
-    }
-
-    // for(auto l: u){
-    //     cout << l.first << l.second << endl;
-    // }
-    vector<ll> eset(m);
-    rep(i, m){
+        int tmpa, tmpb; cin >> tmpa >> tmpb;
+        tmpa--; tmpb--;
         vector<int> root;
-        fds(-1, u[i].first, u[i].second, root);
-        //show(root);
-        for (auto node: root){
-            eset[i] |= 1ll<<node;
+        fds(root, tmpa, tmpb, -1);
+        // cout << i << ":";
+        // show(root);
+        // cout << endl;
+        for(auto hen:root){
+            bitmap_range[i] += 1ll << hen;            
         }
     }
-
     ll ans = 0;
-    //i bitでどの条件の集合をとるかを表す
     rep(i, 1<<m){
-        ll mask = 0;
-        //複数条件の積集合のカバー範囲を記載
+        ll score;
+        ll sum_range = 0;
         rep(j, m){
-            if ((i>>j)&1 == 1){
-                mask |= eset[j];
-            }
+            if (i>>j&1) sum_range |= bitmap_range[j];
         }
-        int white = __builtin_popcountll(mask);
-        ll now = 1ll<<(n-1-white);
-        //cout << white << " "<< now << endl;
-        if (__builtin_popcountll(i)%2 ==0) {
-            ans += now;
+        score = 1ll<<(n-1-__builtin_popcountll(sum_range));
+        if (__builtin_popcountll(i)%2 == 0){
+            ans += score;
         } else {
-            ans -= now;
+            ans -= score;
         }
+        //cout << score << endl;
     }
-    cout << ans << endl;
-    //show(root);
-    //for(auto i: root){cout << i+1 << " ";}
-}
 
+    cout << ans << endl;
+}
