@@ -6,8 +6,8 @@ using namespace std;
 #define showm(m) for(auto i: m){cout << m.x << " ";}
 typedef long long ll;
 typedef pair<int, int> P;
+
 long mod = 1000000007;
-/* C++の構造体 メンバがpublicなclass */
 typedef struct mint
 {
     ll x;
@@ -71,47 +71,33 @@ typedef struct mint
     }
 } mint_t;
 
-mint ans = 0;
-int k;
-void dfs(const vector<vector<int>>&graph, int now, int from){
-    if (graph[now].size() == 1 && from != -1) return;
-
-    int color_var;
-    int child_num;
-    if(from == -1){
-        color_var = k - 1;
-        child_num = graph[now].size();
-    } else {
-        color_var = k - 2;
-        child_num = graph[now].size() - 1;
-    }
-    if (graph[now].size() >= k){
-        ans = 0;
-        return;
-    }
-    rep(i, child_num){
-        ans *= color_var-i;
-        //cout << ans.x << " "<< now << endl;
-    }
-    for (auto next: graph[now])
-    {
-        if (next == from) continue;
-        dfs(graph, next, now);
-    }
-    
-}
-
 int main()
 {
-    int n;cin >> n >> k;
-    vector<vector<int>> graph(n);
-    rep(i, n - 1){ 
-        int a, b; cin>>a>>b;a--;b--;
-        graph[a].push_back(b);
-        graph[b].push_back(a);
+    string s;
+    cin >> s;
+    int len = s.size();
+    mint ans;
+    /*
+    10101111001
+    1***の計算 => もうちょい考えよ
+    0***の計算 => 3^(len-1)
+    */
+    
+    mint dp[100010][2] = {0};
+    dp[0][0] = 1;//0,0になったことがある
+    dp[0][1] = 2;//0,0になったことがない
+    rep(i, len){
+        if (i == 0) continue;
+        if (s[i] == '1'){
+            dp[i][0] = (dp[i-1][0] * 3) + (dp[i-1][1]);
+            dp[i][1] = dp[i-1][1] * 2;
+        } else {
+            dp[i][0] = dp[i-1][0] * 3;
+            dp[i][1] = dp[i-1][1];
+        }
+        //cout << i <<" " << dp[i][0].x <<" " << dp[i][1].x << endl;
     }
-    ans = k;    
-    dfs(graph, 0, -1);
-    cout << ans.x << endl;
+
+    cout << (dp[len-1][0] + dp[len-1][1]).x << endl;
 }
 

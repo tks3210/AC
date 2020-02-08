@@ -6,8 +6,8 @@ using namespace std;
 #define showm(m) for(auto i: m){cout << m.x << " ";}
 typedef long long ll;
 typedef pair<int, int> P;
+
 long mod = 1000000007;
-/* C++の構造体 メンバがpublicなclass */
 typedef struct mint
 {
     ll x;
@@ -71,47 +71,22 @@ typedef struct mint
     }
 } mint_t;
 
-mint ans = 0;
-int k;
-void dfs(const vector<vector<int>>&graph, int now, int from){
-    if (graph[now].size() == 1 && from != -1) return;
-
-    int color_var;
-    int child_num;
-    if(from == -1){
-        color_var = k - 1;
-        child_num = graph[now].size();
-    } else {
-        color_var = k - 2;
-        child_num = graph[now].size() - 1;
-    }
-    if (graph[now].size() >= k){
-        ans = 0;
-        return;
-    }
-    rep(i, child_num){
-        ans *= color_var-i;
-        //cout << ans.x << " "<< now << endl;
-    }
-    for (auto next: graph[now])
-    {
-        if (next == from) continue;
-        dfs(graph, next, now);
-    }
-    
-}
-
+int isbroken[100050] = {0};
 int main()
 {
-    int n;cin >> n >> k;
-    vector<vector<int>> graph(n);
-    rep(i, n - 1){ 
-        int a, b; cin>>a>>b;a--;b--;
-        graph[a].push_back(b);
-        graph[b].push_back(a);
+    int n, m;
+    cin >> n >> m;
+    vector<int> a;
+    rep(i, m){ int tmp; cin >> tmp; isbroken[tmp] = 1;}
+
+    vector<mint> dp(n+1);
+    dp[0] = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        if (isbroken[i] == 1) continue;
+        if (isbroken[i-1] == 0) dp[i] += dp[i-1];
+        if (isbroken[i-2] == 0 && i-2 >= 0) dp[i] += dp[i-2];
     }
-    ans = k;    
-    dfs(graph, 0, -1);
-    cout << ans.x << endl;
+    cout << dp[n].x << endl;
 }
 

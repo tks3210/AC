@@ -3,10 +3,10 @@ using namespace std;
 #define MOD 1000000007
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
 #define show(x) for(auto i: x){cout << i << " ";}
-#define showm(m) for(auto i: m){cout << m.x << " ";}
 typedef long long ll;
-typedef pair<int, int> P;
+
 long mod = 1000000007;
+
 /* C++の構造体 メンバがpublicなclass */
 typedef struct mint
 {
@@ -71,47 +71,35 @@ typedef struct mint
     }
 } mint_t;
 
-mint ans = 0;
-int k;
-void dfs(const vector<vector<int>>&graph, int now, int from){
-    if (graph[now].size() == 1 && from != -1) return;
-
-    int color_var;
-    int child_num;
-    if(from == -1){
-        color_var = k - 1;
-        child_num = graph[now].size();
-    } else {
-        color_var = k - 2;
-        child_num = graph[now].size() - 1;
-    }
-    if (graph[now].size() >= k){
-        ans = 0;
-        return;
-    }
-    rep(i, child_num){
-        ans *= color_var-i;
-        //cout << ans.x << " "<< now << endl;
-    }
-    for (auto next: graph[now])
-    {
-        if (next == from) continue;
-        dfs(graph, next, now);
-    }
-    
-}
-
 int main()
 {
-    int n;cin >> n >> k;
-    vector<vector<int>> graph(n);
-    rep(i, n - 1){ 
-        int a, b; cin>>a>>b;a--;b--;
-        graph[a].push_back(b);
-        graph[b].push_back(a);
+    int n;
+    cin >> n;
+    vector<int> a;
+    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    sort(a.begin(), a.end());
+
+
+    vector<mint> mutplus;
+    mint tmp(1);
+    rep(i, n + 1){
+        mutplus.push_back(tmp);
+        tmp *= 2;
     }
-    ans = k;    
-    dfs(graph, 0, -1);
+    mint ans(0);
+    mint mut(0);
+    if (n == 1){
+        ans = (mint)a[0] * 2;
+        cout << ans.x << endl;
+        return 0;
+    }
+    rep(i, n){
+        mut = mutplus[n-1] + mutplus[n-2] * (mint)(n-1-i);
+        //cout << mut.x << endl;
+        ans += mut * a[i];
+    }
+    ans *= mutplus[n];
+
     cout << ans.x << endl;
 }
 

@@ -10,14 +10,16 @@ typedef pair<int, int> P;
 
 int main()
 {
-    ll w, h, x, y;
-    cin >> w >> h >> x >> y;
-
-    double ans1 = (double)(w * h) / 2.0; 
-    int ans2 = 0; 
-    if (x == (w/2) && y == (h/2) && w%2 == 0 && h%2 == 0){
-        ans2 = 1;
+    int n, l;
+    cin >> n >> l;
+    int sum = l*n + n*(n-1)/2;
+    int d = n + l - 1;
+    if (l <= 0 && d >= 0){
+        cout << sum << endl;
+    } else if (d < 0) {
+        cout << sum - d<< endl;
+    } else {
+        cout << sum - l<< endl;
     }
-    cout << ans1 << " " << ans2 << endl;
 }
 

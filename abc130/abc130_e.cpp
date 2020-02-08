@@ -6,33 +6,25 @@ typedef long long ll;
 
 #define S 2005
 #define T 2005
-ll dp_3[S][T] = {0};
-
-int dp_sumCommonPartString(vector<int> s, vector<int> t){
-    for (int i = 0; i < s.size(); i++)
-    {
-        for (int j = 0; j < t.size(); j++)
-        {
-            if(s[i] == t[j]){
-                dp_3[i + 1][j + 1] = (dp_3[i][j + 1] + dp_3[i + 1][j] + 1);
-            } else {
-                dp_3[i + 1][j + 1] = (dp_3[i][j + 1] + dp_3[i + 1][j] - dp_3[i][j]);
-            }
-            dp_3[i + 1][j + 1] %= MOD;
-            if (dp_3[i + 1][j + 1] < 0) dp_3[i + 1][j + 1] += MOD;
-            //printf("[%d][%d]:%d ", i, j, dp_3[i + 1][j + 1]);
+ll dp[S][T] = {0};
+ll dp_sumCommonString(vector<int>& s, vector<int>& t){
+    rep(i, s.size())rep(j, t.size()){
+        if (s[i] == t[j]){
+            dp[i+1][j+1] = dp[i][j+1] + dp[i+1][j] + 1;
+        } else {
+            dp[i+1][j+1] = dp[i][j+1] + dp[i+1][j] - dp[i][j];
         }
-        //printf("\n");
+        dp[i+1][j+1] %= MOD; 
     }
-    return (int)dp_3[s.size()][t.size()];
+    return dp[s.size()][t.size()] + 1;
 }
 
-
 int main(){
-    vector<int> s, t;
     int n, m;
     cin >> n >> m;
-    rep(i, n){ int tmp; cin >> tmp; s.push_back(tmp);}
-    rep(i, m){ int tmp; cin >> tmp; t.push_back(tmp);}
-    cout << (dp_sumCommonPartString(s, t) + 1) % MOD << endl;  
+    vector<int> s(n);
+    vector<int> t(m);    
+    rep(i, n) {int tmp; cin >> tmp; s[i] = tmp;}
+    rep(j, m) {int tmp; cin >> tmp; t[j] = tmp;}
+    cout << dp_sumCommonString(s, t) << endl; 
 }
