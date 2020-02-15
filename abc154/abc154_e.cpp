@@ -13,44 +13,29 @@ typedef pair<int, int> P;
 int main()
 {
     string n;
-    int k;
-    cin >> n >> k;
+    int K;
+    cin >> n >> K;
 
     int len = n.size();
 
-    // dp[k][l]: kは残り非0, lは1の時=状態
+    // dp[j][k]: jは使用した非ゼロ, kは0の時=状態
     int dp[4][2] = {0};
-    dp[k][1] = 1;
+    dp[0][0] = 1;
     rep(i, len){
         int nextdp[4][2] = {0};
         int num = n[i] - '0'; //上位i+1桁目の数字をチェック
-        //cout << num << endl;
-        //l=0側からの更新
-        rep(k_itr, k){
-            nextdp[k_itr][0] += dp[k_itr+1][0] * 9;
-        }
-        rep(k_itr, k+1){
-            nextdp[k_itr][0] += dp[k_itr][0];
-        } 
-        //l=1側からの更新
-        //l=1を維持
-        if (num != 0){
-            rep(k_itr, k) nextdp[k_itr][1] = dp[k_itr+1][1];
-        } else{
-            rep(k_itr, k+1) nextdp[k_itr][1] = dp[k_itr][1];
-        }
-        
-        //l=0に推移
-        rep(k_itr, k) nextdp[k_itr][0] += max(num - 1, 0) * dp[k_itr+1][1]; //1以上の数で推移
-        if (num != 0) rep(k_itr, k+1) nextdp[k_itr][0] += dp[k_itr][1]; //0で推移
-    
+        rep(j, K+1)rep(k, 2)rep(d, 10){
+            int nj = j, nk = k; 
+            if (d != 0) nj++;
+            if (nj > K) continue;
+            if (k == 0){
+                if (d > num) continue;
+                if (d < num) nk = 1;
+            }            
+            nextdp[nj][nk] += dp[j][k];
+        }        
         memcpy(dp, nextdp, sizeof(nextdp));
-
     }
-
-
-    cout << dp[0][0] + dp[0][1] << endl;
-    
-
+    cout << dp[K][0] + dp[K][1] << endl;
 }
 

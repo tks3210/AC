@@ -2,6 +2,9 @@
 using namespace std;
 #define MOD 1000000007
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
+#define rep1(i, n) for(int i = 1; i <= (int)(n); i++)
+#define show(x) for(auto i: x){cout << i << " ";}
+#define showm(m) for(auto i: m){cout << m.x << " ";}
 typedef long long ll;
 
 template<class X> void divisor(X input, vector<X>& Dnumber){
@@ -13,69 +16,49 @@ template<class X> void divisor(X input, vector<X>& Dnumber){
         }
     }
     Dnumber.push_back(input);
-    sort(Dnumber.begin(), Dnumber.end());
+    Dnumber.push_back(1);
+    sort(Dnumber.begin(), Dnumber.end(), greater<X>());
 }
 
 
+
+int process(int num, vector<int>& a){
+    vector<int> sorted_div;
+
+    rep(i, a.size()) sorted_div.push_back(a[i]%num);
+    sort(sorted_div.begin(), sorted_div.end());
+
+    ll sum_to_next = 0;
+    rep(i, a.size()) sum_to_next += num - sorted_div[i];
+    int ans = 0;
+    rep(i, (sum_to_next / num)) ans += sorted_div[i];
+    return ans; 
+}
 
 int main()
 {
     int n, k;
     cin >> n >> k;
     vector<int> a;
-    vector<int> fac;
+    rep(i, n) {int tmp; cin >> tmp; a.push_back(tmp);}
+
     int sum = 0;
-    rep(i, n){ 
-        int tmp; 
-        cin >> tmp; 
-        a.push_back(tmp);
-        sum += tmp;
-    }
-    divisor(sum , fac);
-    //printf("%d\n",sum);
-    vector<int> kaisu;
-    /* 余りの算出アルゴリズムが違う */
-    for (int i = 0; i < fac.size(); i++)
-    {
-        vector<int> amari;
-        vector<int> amari_sum;
-        vector<int> amari_sum_inv;
+    rep(i, n) sum += a[i];
 
-        for(auto j: a) {
-            if (j % fac[i] != 0) {amari.push_back(j % fac[i]);}
-        }
-        sort(amari.begin(), amari.end());
+    vector<int> div;
+    divisor(sum, div);
 
-        int tmp1 = 0; 
-        int tmp2 = 0;      
-        for (int j = 0; j < amari.size(); j++)
-        {
-           tmp1 += amari[j];
-           tmp2 += (fac[i] - amari[j]);
-           //printf("[%d]-[%d]",fac[i], amari[j]);
-           amari_sum.push_back(tmp1);
-           amari_sum_inv.push_back(tmp2);
-        }
-        int ans = amari_sum_inv[amari.size() - 1];
-        for (int i = 1; i < amari.size(); i++)
-        {
-            ans = min(ans, (amari_sum[i - 1]) + (amari_sum_inv[amari.size() - 1] - amari_sum_inv[i])); 
-        }
-        kaisu.push_back(ans);
-    }
-   //for ( auto i: fac) {cout << i <<" "; }
-    //cout << endl;
-    //for ( auto i: kaisu) {cout << i <<" "; }
+    //show(div);    
 
-    int ans_ = -1;
-    for (int i = kaisu.size() - 1; i >= 0 ; i--)
-    {
-        if (kaisu[i] <= k) {
-            ans_ = i;
+    int ans = 0;
+    rep(i, div.size()){
+        int num = div[i];
+        if(process(num, a) <= k){
+            ans = num;
             break;
         }
     }
-    
-    cout << ((ans_ != -1) ? fac[ans_] : 1 )<< endl;
+
+    cout << ans << endl;
 }
 

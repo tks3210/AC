@@ -2,9 +2,13 @@
 using namespace std;
 #define MOD 1000000007
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
+#define show(x) for(auto i: x){cout << i << " ";}
+#define showm(m) for(auto i: m){cout << m.x << " ";}
 typedef long long ll;
+typedef pair<int, int> P;
 
 long mod = 1000000007;
+/* C++の構造体 メンバがpublicなclass */
 typedef struct mint
 {
     ll x;
@@ -68,44 +72,56 @@ typedef struct mint
     }
 } mint_t;
 
+ll intpow(mint_t m, int n)
+{
+    if (n == 0) return 1;
+    mint_t ans(1);
+    while (n >= 1)
+    {
+        if ((n % 2) == 0){
+            m *= m.x;
+            n /= 2;
+        }else {
+            ans *= m.x;
+            n -= 1;
+        }
+    }
+    return ans.x;
+}
 
-mint dp[100001][13] = {0};
+struct combination {
+  vector<mint> fact, ifact;
+  combination(int n):fact(n+1),ifact(n+1) {
+    assert(n < mod);
+    fact[0] = 1;
+    for (int i = 1; i <= n; ++i) fact[i] = fact[i-1]*i;
+    ifact[n] = fact[n].inv();
+    for (int i = n; i >= 1; --i) ifact[i-1] = ifact[i]*i;
+  }
+  mint operator()(int n, int k) {
+    if (k < 0 || k > n) return 0;
+    return fact[n]*ifact[k]*ifact[n-k];
+  }
+};
+
+combination com(2000100);
+
+mint g(int i, int j){
+
+    return com(i+j+2, i+1) - 1;
+}
 
 int main()
 {
-    string s;
-    cin >> s;
+    int r1, c1, r2, c2;
+    cin >> r1 >> c1 >> r2 >> c2;
 
-    int num = s.size();
-    mint ans(0);
-    int mul = 1;
-    dp[0][0] = 1;
+    r1--, c1--;    
+    mint ans = g(r2, c2);
+    ans -= g(r1, c2);
+    ans -= g(r2, c1);
+    ans += g(r1, c1);
 
-    rep(i, num){
-        char x = s[num-1-i];
-        //cout << x << endl;
-        if (x == '?'){
-            rep(k, 10){
-                rep(j, 13){
-                    dp[i+1][(j + mul * k)%13] += dp[i][j];
-                }
-            }
-        } else {
-            int k = x - '0';
-            rep(j, 13){
-                dp[i+1][(j + mul * k)%13] = dp[i][j];
-            }
-        }
-        mul *= 10;
-        mul %= 13;
-    }
-
-    // rep(i, num+1){
-    //     rep(j, 13){
-    //         cout << dp[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
-    cout << dp[num][5].x << endl;
+    cout << ans.x << endl;
 }
 
