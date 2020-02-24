@@ -2,7 +2,6 @@
 using namespace std;
 #define MOD 1000000007
 #define rep(i, n) for(int i = 0; i < (int)(n); i++)
-#define rep1(i, n) for(int i = 1; i <= (int)(n); i++)
 #define show(x) for(auto i: x){cout << i << " ";}
 #define showm(m) for(auto i: m){cout << m.x << " ";}
 typedef long long ll;
@@ -11,8 +10,17 @@ typedef pair<int, int> P;
 
 int main()
 {
-    ll n;
+    int n;
     cin >> n;
-    cout << n*(n-1)/2 << endl;
+    vector<int> a;
+    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+
+    sort(a.begin(), a.end());
+    bool ans = false;
+    rep(i, n-1){
+        if (a[i] == a[i+1]) {ans = true; break;}
+    }
+    if (ans) puts("NO");
+    else puts("YES");
 }
 

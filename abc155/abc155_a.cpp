@@ -7,12 +7,24 @@ using namespace std;
 #define showm(m) for(auto i: m){cout << m.x << " ";}
 typedef long long ll;
 typedef pair<int, int> P;
+ll gcd(int x, int y){ return y?gcd(y, x%y):x;}
+ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 
 int main()
 {
-    ll n;
-    cin >> n;
-    cout << n*(n-1)/2 << endl;
+    int a, b, c;
+    cin >> a >> b >> c;
+
+    if (a == b || b == c || c == a){
+        if (a == b && b == c){
+
+        } else {
+            puts("Yes");
+            return 0;
+        }
+    }
+    puts("No");
+    return 0;
 }
 

@@ -15,12 +15,23 @@ int main()
 {
     int n;
     cin >> n;
-    vector<P> a;
-    rep(i, n){ int tmp; cin >> tmp; a.emplace_back(tmp, i+1);}
+    vector<int> x;
+    rep(i, n){ int tmp; cin >> tmp; x.push_back(tmp);}
 
-    sort(a.begin(), a.end());
+    ll sum_x = 0;
+    ll sum_xx = 0;
     rep(i, n){
-        cout << a[i].second<< " ";
+        sum_x += x[i];
+        sum_xx += x[i] * x[i];
     }
+
+    ll ans = MOD;
+    
+    rep(p, 100){
+        ll cal = sum_xx + (p+1)*(p+1)*n -2*(p+1)*sum_x;  
+        ans = min(ans, cal);
+    }
+
+    cout << ans << endl;
 }
 

@@ -98,7 +98,7 @@ void dfs(int parent, int now, int now_color){
 
 }
 ```
-### abc126_e
+## abc126_e
 * N枚のカードには1 or 2が書かれている
 * M個のヒントがある
     * A_x + A_y + Zが偶数
@@ -576,6 +576,30 @@ All you can eat
 
 # abc147
 
+## abc147-c(WA, AC)
+* N人が他の人の証言をして、矛盾が無い中での正直な最大人数を求める
+
+### coding
+* bitカウント
+```c++
+int counter(int x) {
+    if(x == 0) return 0;
+    return counter(x >> 1) + (x & 1);
+}
+```
+
+## abc147-d(WA, AC)
+* 数列に対して、二数のXORの全ての組み合わせの総和を求める
+
+## 検討
+* bitごとに全ての数字を舐めると、1がある数 ×　0がある数で加算される数が求まる
+
+## coding
+* intのoverflowを只管警戒すべし(1WA)
+
+## 抽象化
+* 総和問題は総和の順序を帰る
+
 ## abc147-e
 
 ### 検討
@@ -917,6 +941,17 @@ n.push_back(0)
 
 # abc154
 
+## abc154_d(WA)
+数列が与えられ1~piが等確率ででるサイコロを人並びのk個降る時の最大期待値
+
+### 検討
+* 最大値となる区間を求めて、+kして2で割る
+
+### coding
+* 小数を表記する際はprintf("%lf\n", (double)aa)でやらないと、表示上WAとなってしまうことがある。
+
+
+
 ## abc154_e(AC, 200min)
 N以下の数字で非0を含む数がk個である場合の数を求める
 
@@ -944,8 +979,96 @@ N以下の数字で非0を含む数がk個である場合の数を求める
     * パスカルの三角形上で、横一列の和は2のべき乗で求められる
     * パスカルの三角形上で、斜め列の和は一つ下と同じ
 
+## abc155_d(no AC)
 
-### 
+### 抽象化
+* ある値を抽出したいが、候補が多く一つ一つ見ていくと間に合わない
+    * 解を二分探索で求める
+* k番目に大きい値を求める場合
+    * 「x未満がk個未満」であるxの最大値を二分探索
+* 少し面倒な条件の場合、lower_bound()を使わず、スクラッチで二分探索書いたほうが良し
+### coding
+* めぐる式二分探索
+
+## abc155_e
+* 1, 10, 100, ... のお札での最小の取引枚数
+
+### 検討
+* 上位bitから貪欲法っぽく解こうとするも上手く行かず。
+* ぴったり払うか、お釣りを貰うかの二択を選び続けるようなイメージ？
+
+### 解法
+* dp[i][0]:上位i桁目でおつりをもらう前提での最小枚数
+* dp[i][1];上位i桁目でおつりをもらわない前提での最小枚数
+```c++
+dp[0] = min(old_dp[0] + (10-num)-1, old_dp[1]+(10-num)+1);
+dp[1] = min(old_dp[0], old_dp[1]) + num;
+```
+
+## abc155_f
+* 爆弾がある座標におかれており、ON/OFFになっている
+* ある区間の爆弾のON/OFFを反転させるスイッチが存在
+* 全てOFFにできるか判定、できるならスイッチを出力
+
+### 検討
+* 区間系の問題なので、区間情報と爆弾情報をデータ構造にぶちこんで貪欲法？
+* 結局貪欲法から先が進まない
+
+### 解法
+* 爆弾のON/OFFの羅列を01で表し両端に0を挿入：bom(n+2)
+* 差分列をとり、変化があった場合に1を立てる: mid(n+1)
+* スイッチの情報を差分列のどこに対応するかをfrom, to, id で表す(tuple): range(m)
+* midの情報を頂点V、rangeを辺Eとするグラフを構築する
+* 各連結成分に対して、
+    * 全域木を作成する(bfs)
+    * dfsで深さ優先探索、子成分が1ならば辺をONにする。
+
+### coding
+* visited[]を使うと、fdsしながら全域木が作れる
+* 0->1, 1->0の操作を同じ式でやるには、a = a^bでよし
+* pairで足りないときはtupleを使うと良し
+
+# abc156
+## abc156_c
+* 複数の座標にN人の人間がいて、座標Xでパーティを行う際の移動距離の二乗合計
+
+### 検討
+* 二乗の式を展開すると、O(N)で計算することが分かる
+
+## abc156_d
+* n本の花からできる花束の数
+* a, b本の花束は除外(a,b本は10^5以下)
+* n は10^9
+
+### 検討
+* nが大きいのでchooseのライブラリをそのまま使うとダメ
+* nC1+nC2...は二項定理で計算可能
+* nCa, nCbを引く必要があるので、これは手計算
+```c++
+mint comb(int n, int k){
+    mint fact, ifact;
+    fact = 1; ifact = 1;
+    for (int i = n; i > n-k; i--) fact *= i;
+    for (int i = 1; i <= k; i++) ifact *= i;
+    return fact / ifact;
+}
+```
+
+## abc156_e(50min, AC)
+* 各部屋に1名ずついる、k回の移動であり得る組み合わせの総数
+
+### 検討
+* 0の数がk個以下の場合ならOK
+* 余事象で解いた
+    * 合計nとなる要素列(n)の組み合わせはC(2n-1, n)
+    * そこから、0の数がk個より多い場合を引く
+* 0以外の数がk個の求め方
+    * n-1の候補に棒をk-1個入れる　C(n-1, k-1)
+    * 両端ork-1の部分に残りの棒(n-1)-(k-1)個を重複を許して入れる
+        * k+1の箱にn-k個入れる C(n, k)
+### 抽象化
+* n個のものをk個の箱に重複を許して入れる　C(n+k-1, k)
+* n個のものをk個の箱に重複を許さず入れる　C(n, k)
 
 # Tips
 
@@ -975,6 +1098,38 @@ ll gcd(int x, int y){ return y?gcd(y, x%y):x;}
 ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 ```
 
+## 約数
+素因数分解
+```c++
+template<class X> void factorization(X input, vector<X>& Pnumber){
+    for(X i = 2; i*i <= input; i++)
+    {
+        if (input % i == 0){
+            while (input % i == 0){
+                input /= i;
+                Pnumber.push_back(i);
+            }
+        }
+    }
+    if (input != 1) Pnumber.push_back(input);
+}
+```
+
+約数列挙
+```c++
+template<class X> void divisor(X input, vector<X>& Dnumber){
+    for (X i = 2; i*i <= input; i++)
+    {
+        if (input % i == 0){
+            Dnumber.push_back(i);
+            if (i * i  != input) Dnumber.push_back(input / i);
+        }
+    }
+    sort(Dnumber.begin(), Dnumber.end());
+}
+```
+
+
 ## 累積和
 
 添字等で混乱しがち！
@@ -1003,8 +1158,6 @@ rep(left, n){
     else sum -= a[left];
 }
 ```
-
-
 ### ユースシーン
 長さnの数列において、
 * 「条件」を満たす区間のうち、最小・最大の長さを求める
@@ -1014,7 +1167,48 @@ rep(left, n){
 * 区間の開始地点を固定し、終了地点を条件を満たす範囲で動かす
 * 区間の開始地点を1増やす。
 
-## 二分探索系STLライブラリ
+## 再起関数の組み方のポイント
+* 小問題に分解していき、最終的にreturnさせるようにする
+    * 関数の最初にreturnを置く
+    * fdsを呼び出さないようにして、関数の最後にreturnを置く
+* 何らかの処理を行うとき、親側で行うか、小側で行うかを明確にする
+    * 色を塗る
+* 子から親に情報を引き継ぐ必要があるときは、戻り値で受け取るか、グローバル変数で受け取るか
+* 具体例から考察するときは、葉とその親から考えてだんだん上に上ってくイメージで考えるといいかも
+
+## 二分探索
+
+ある条件に対して単調的にtrue/falseが推移する数列や数字列に対し、  
+true/falseの境界を求めるための手法。
+* 計算量は区間[l, r]のサイズの対数時間
+* lの初期値,rの初期値は、確実にtrue/false, false/trueになる値にする必要がある。
+    *（あるいは参照されない値にする必要がある）
+* l,rによりtrue,falseの境界が定まる
+
+```c++
+ll l = MIN_INI; //最小値(確実にtrue/falseとなる)
+ll r = MAX_INI; //最大値(確実にfalse/trueとなる)
+while(abs(l-r) > 1){
+    ll mid = (l + r) /2;
+    bool ok = [&]{
+        //条件
+        return tf; //true/false
+    };
+    //midがtrueだった場合、true側を更新
+    //midがfalseだった場合、false側を更新
+    if (ok) l = mid; else r = mid;
+}
+// l, rが最終的に境界となる。
+```
+
+思考ポイントとしては、条件をどう設定すべきか？という点
+* ある候補(要素数大)の中からk番目の数字を選ぶ
+    * => xより小さい数がk個未満の中で最大値を求めたい
+    * => xより小さい数がk個未満か否かでT/F判定
+
+* abs(l-r)>1 のお陰でl,rの初期値での処理は行われない
+    * l + r / 2は正負によって切り上げ、切り捨てが変わるので考慮が面倒だが、
+    abs(l-r)>1のときにl,rと一致する可能性はない
 
 ### lower_bound, upper_bound
 共に、**昇順ソートされた**数列に対して適応する。
@@ -1052,25 +1246,7 @@ bool cmp(const pair<ll, bool> &a, const pair<ll, bool> &b){
 sort(range[i].begin(), range[i].end(), cmp);
 ```
 
-## mint
-### conb
-```c++
-void comp(ll b, int n, vector<mint>& q){
-    
-    mint x(1);
-    rep(i, n + 1){
-        if (i < b) {
-            q.push_back(0);
-        } else if (i == b){
-            q.push_back(1);
-        } else {
-            x *= (mint)i;
-            x /= (mint)(i-b);
-            q.push_back(x);
-        }
-    }
-}
-```
+
 
 ## mapの使い方
 
@@ -1144,6 +1320,9 @@ int main(){
 
 ## グラフ系アルゴリズム
 ### 幅優先探索
+* 重み無最短経路
+* O(V)
+
 ### トポロジカルソート
 有向非巡回グラフ(DAG)の各ノードを順位付けして、
 どのノードの出力も先のノードになるように並べる。
@@ -1202,9 +1381,10 @@ int dfs(int v) {
 
 
 ### ダイクストラ法(単一始点最短経路)
+http://kuuso1.hatenablog.com/entry/2015/12/20/212620
 
 ### ベルマンフォード法(負辺ありの最短経路)
-
+* 計算量がO(V*M)
 * 全ての辺に対して頂点数N回を下記の操作を行う
     * 辺u->v(重みw)に対して、 d[v] = min(d[v], d[u] + w)
 * 負辺があってもＯＫ
@@ -1235,3 +1415,142 @@ int dfs(int v) {
 
 
 ### ワーシャルフロイド法(全頂点間最短経路)
+
+
+## mint
+
+```c++
+long mod = 1000000007;
+/* C++の構造体 メンバがpublicなclass */
+typedef struct mint
+{
+    ll x;
+    mint(ll x = 0) : x(x % mod) {} //コンストラクタ
+    /* 演算子オーバーロード */
+    mint &operator+=(const mint a)
+    {
+        if ((x += a.x) >= mod)
+            x -= mod;
+        return *this;
+    }
+    mint &operator-=(const mint a)
+    {
+        if ((x += mod - a.x) >= mod)
+            x -= mod;
+        return *this;
+    }
+    mint &operator*=(const mint a)
+    {
+        (x *= a.x) %= mod;
+        return *this;
+    }
+    mint operator+(const mint a) const
+    {
+        mint res(*this);
+        return res += a;
+    }
+    mint operator-(const mint a) const
+    {
+        mint res(*this);
+        return res -= a;
+    }
+    mint operator*(const mint a) const
+    {
+        mint res(*this);
+        return res *= a;
+    }
+    mint pow(ll t) const
+    {
+        if (!t)
+            return 1;
+        mint a = pow(t >> 1);
+        a *= a;
+        if (t & 1)
+            a *= *this;
+        return a;
+    }
+    // for prime mod
+    mint inv() const
+    {
+        return pow(mod - 2);
+    }
+    mint &operator/=(const mint a)
+    {
+        return (*this) *= a.inv();
+    }
+    mint operator/(const mint a) const
+    {
+        mint res(*this);
+        return res /= a;
+    }
+} mint_t;
+
+ll intpow(mint_t m, int n)
+{
+    if (n == 0) return 1;
+    mint_t ans(1);
+    while (n >= 1)
+    {
+        if ((n % 2) == 0){
+            m *= m.x;
+            n /= 2;
+        }else {
+            ans *= m.x;
+            n -= 1;
+        }
+    }
+    return ans.x;
+}
+
+struct combination {
+  vector<mint> fact, ifact;
+  combination(int n):fact(n+1),ifact(n+1) {
+    assert(n < mod);
+    fact[0] = 1;
+    for (int i = 1; i <= n; ++i) fact[i] = fact[i-1]*i;
+    ifact[n] = fact[n].inv();
+    for (int i = n; i >= 1; --i) ifact[i-1] = ifact[i]*i;
+  }
+  mint operator()(int n, int k) {
+    if (k < 0 || k > n) return 0;
+    return fact[n]*ifact[k]*ifact[n-k];
+  }
+};
+```
+
+## 切り上げの割り算
+
+```c++
+// -3 / 5 = -2, 4 / 3 = 2
+bool divabsfloor (ll x, ll y, ll& ans) {
+    if(!y) return false;
+    int mut = 1;
+    if ((x < 0 && y >= 0) || (x >= 0 && y < 0)) mut = -1;
+    ans = (abs(x)+abs(y)-1)/abs(y) * mut;
+    return true;
+}
+
+// -3 / -4 = 0, 3 / 4 = 1
+bool divfloor (ll x, ll y, ll& ans) {
+    if(!y) return false;
+    ans = x/y;
+    if (x%y && ans > 0) ans++;
+    return true;
+}
+```
+
+## 3つ以上のデータの配列管理したいとき
+* tupleが便利
+```c++
+vector<tuple<int, int, int>> edges; //宣言する
+edges.emplace_back(tmpa,tmpb,tmpc); //入れる
+tie(a,b,c) = edges[i]; // 受け取る
+```
+
+## printfを楽にしたい
+これでできるの？
+```c++
+inline int isum(){ return 0;}
+template<typename First, typename... Rest>
+int isum(const First& first, const Rest&... rest){  return first + isum(rest...);}
+```

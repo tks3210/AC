@@ -10,17 +10,31 @@ typedef pair<int, int> P;
 ll gcd(int x, int y){ return y?gcd(y, x%y):x;}
 ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
+#define N_MAX 5050
+int n;
+
+int dp[N_MAX][N_MAX];
 
 int main()
 {
     int n;
-    cin >> n;
-    vector<P> a;
-    rep(i, n){ int tmp; cin >> tmp; a.emplace_back(tmp, i+1);}
-
-    sort(a.begin(), a.end());
-    rep(i, n){
-        cout << a[i].second<< " ";
+    string s;
+    cin >> n >> s;
+    
+    int ans = 0;
+    rep(i, n)rep(j, n){
+        if(s[i] == s[j]){
+            if (abs(i-j) > dp[i][j]) dp[i+1][j+1] = dp[i][j] + 1; 
+        }
+        ans = max(dp[i+1][j+1], ans);
     }
+    // rep(i, n+1){
+    //     rep(j, n+1){
+    //         cout << dp[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    cout << ans << endl;
 }
 

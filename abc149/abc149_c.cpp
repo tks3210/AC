@@ -5,12 +5,26 @@ using namespace std;
 #define show(x) for(auto i: x){cout << i << " ";}
 typedef long long ll;
 
+bool isprime(int n){
+    for(int i = 2; i*i < n; i++){
+        if (n % i == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    int x;
+    cin >> x;
+    while(1){
+        if(isprime(x)){
+            cout << x << endl;
+            return 0;
+        }
+        x++;
+    }
 }
 

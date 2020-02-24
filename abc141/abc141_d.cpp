@@ -13,14 +13,24 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<P> a;
-    rep(i, n){ int tmp; cin >> tmp; a.emplace_back(tmp, i+1);}
+    int n, m;
+    cin >> n >> m;
+    priority_queue<int, vector<int>> a;
+    rep(i, n){ int tmp; cin >> tmp; a.push(tmp);}
 
-    sort(a.begin(), a.end());
-    rep(i, n){
-        cout << a[i].second<< " ";
+    rep(i, m){
+        int price = a.top();
+        a.pop();
+
+
+        price /= 2;
+        a.push(price);
     }
+    ll sum = 0;
+    while(!a.empty()) {
+        sum += a.top();
+        a.pop();
+    }
+    cout << sum << endl;
 }
 

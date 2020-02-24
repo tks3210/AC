@@ -15,12 +15,20 @@ int main()
 {
     int n;
     cin >> n;
-    vector<P> a;
-    rep(i, n){ int tmp; cin >> tmp; a.emplace_back(tmp, i+1);}
+    vector<int> a;
+    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
 
-    sort(a.begin(), a.end());
+
+    bool ans = true;
     rep(i, n){
-        cout << a[i].second<< " ";
+        if (a[i] % 2 == 0){
+            if (a[i] % 3 && a[i] % 5){
+                ans = false;
+            }
+        }
     }
+
+    if (ans) puts("APPROVED");
+    else puts("DENIED");
 }
 

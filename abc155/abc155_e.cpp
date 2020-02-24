@@ -13,14 +13,21 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<P> a;
-    rep(i, n){ int tmp; cin >> tmp; a.emplace_back(tmp, i+1);}
+    string s;
+    cin >> s;
 
-    sort(a.begin(), a.end());
-    rep(i, n){
-        cout << a[i].second<< " ";
+
+    int ans = 0;
+    vector<int> dp(2, 0);
+    vector<int> old_dp(2, 0);
+ 
+    rep(i, s.size()){
+        int num = s[i] - '0';
+        if (i == 0) {old_dp[0] = (10-num)+1; old_dp[1] = num; continue;}
+        dp[0] = min(old_dp[0] + (10-num)-1, old_dp[1]+(10-num)+1);
+        dp[1] = min(old_dp[0], old_dp[1]) + num;
+        old_dp = dp;
     }
+    cout << min(old_dp[0],old_dp[1]) << endl;
 }
 

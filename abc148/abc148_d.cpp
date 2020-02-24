@@ -11,8 +11,19 @@ typedef pair<int, int> P;
 
 int main()
 {
-    ll n;
+    int n;
     cin >> n;
-    cout << n*(n-1)/2 << endl;
+    vector<int> a;
+    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+
+    int itr = 1;
+    rep(i, n){
+        if (a[i] == itr){
+            itr++;
+        }
+    }
+    int ans = n - itr + 1;
+    if (ans == n) puts("-1");
+    else cout << ans << endl;
 }
 
