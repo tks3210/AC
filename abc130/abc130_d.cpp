@@ -15,22 +15,20 @@ int main()
     vector<int> a;
     rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
 
-    ll ans = n * (n+1) / 2;
-    ll ans_ = 0;
-    int right = 0;
-    
+    int r = 0;
     ll sum = 0;
-    rep(left, n){
-
-        while(right < n && (sum + a[right]) < k){
-            sum += a[right];
-            ++right;
+    ll ans_ = 0;
+    rep(l, n){
+        while(a[r] + sum < k){
+            if (r == n) break; 
+            sum += a[r];
+            r++;
         }
-        ans_ += (right - left);
-        if (right == left) ++right;
-        else sum -= a[left];
+        //cout << l << ":" << r << ":" << sum << endl;
+        ans_ += r - l;
+        sum -= a[l];
     }
 
-    cout << ans - ans_ << endl;
+    cout << (ll)(n * (n + 1) / 2) - ans_ << endl;
 }
 

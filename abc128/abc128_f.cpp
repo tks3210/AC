@@ -13,7 +13,7 @@ int main()
     int n;
     cin >> n;
     vector<int> s;
-    rep(i, n-1){ int tmp; cin >> tmp; s.push_back(tmp);}
+    rep(i, n){ int tmp; cin >> tmp; s.push_back(tmp);}
 
     // c-1
     ll max_score = 0;

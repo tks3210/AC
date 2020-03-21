@@ -72,46 +72,41 @@ typedef struct mint
 } mint_t;
 
 mint ans = 0;
+vector<vector<int>> graph;
 int k;
-void dfs(const vector<vector<int>>&graph, int now, int from){
-    if (graph[now].size() == 1 && from != -1) return;
-
-    int color_var;
-    int child_num;
-    if(from == -1){
-        color_var = k - 1;
-        child_num = graph[now].size();
+void dfs(int now, int parent){
+    int color_rem = k;
+    int child_size = graph[now].size();
+    if (parent == -1){
+        color_rem -= 1;
     } else {
-        color_var = k - 2;
-        child_num = graph[now].size() - 1;
+        color_rem -= 2;
+        child_size -= 1;
     }
-    if (graph[now].size() >= k){
-        ans = 0;
-        return;
+//    cout << now << ":" << color_rem<< endl;
+    if (color_rem < child_size){
+        ans *= 0;
+    } else {
+        rep(i, child_size) {ans *= color_rem-i;}
     }
-    rep(i, child_num){
-        ans *= color_var-i;
-        //cout << ans.x << " "<< now << endl;
+    for(auto next: graph[now]){
+        if (next == parent) continue;
+        dfs(next, now);
     }
-    for (auto next: graph[now])
-    {
-        if (next == from) continue;
-        dfs(graph, next, now);
-    }
-    
+    return;
 }
 
 int main()
 {
     int n;cin >> n >> k;
-    vector<vector<int>> graph(n);
+    graph = vector<vector<int>>(n);
     rep(i, n - 1){ 
         int a, b; cin>>a>>b;a--;b--;
         graph[a].push_back(b);
         graph[b].push_back(a);
     }
     ans = k;    
-    dfs(graph, 0, -1);
+    dfs(0, -1);
     cout << ans.x << endl;
 }
 
