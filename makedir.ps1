@@ -1,6 +1,8 @@
 # Ex. powershell -ExecutionPolicy RemoteSigned .\makedir.ps1 abc123
 $contest_name = $Args[0]
-mkdir $contest_name
+$dir_name = "training/" +$Args[0]
+#$dir_name = $Args[0]
+mkdir $dir_name
 $start = [byte][char]$Args[1]
 $end = [byte][char]$Args[2]
 
@@ -15,5 +17,5 @@ for ($i = $start; $i -le $end; $i++) {
 for ($i = 0; $i -lt $array.Count; $i++) {
     $name_diff = $array[$i]
 #    Write-Output($name_diff)
-    Copy-Item Template.cpp "${contest_name}/${contest_name}_${name_diff}.cpp"   
+    Copy-Item Template.cpp "${dir_name}/${contest_name}_${name_diff}.cpp"   
 }

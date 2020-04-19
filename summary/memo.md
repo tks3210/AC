@@ -540,7 +540,7 @@ vector<tuple<int, int, int>> edges;
 * 何日で終わるかを出力
 
 ### 検討
-* 試合を挑戦とおいて、優先順に対して有向辺を引く
+* 試合を頂点とおいて、優先順に対して有向辺を引く
 * トポロジカルソートして、最長路が答え
     * 実装できねえ・・・
 ### coding
@@ -1157,6 +1157,18 @@ mint comb(int n, int k){
 ## abc158_e(editor AC)
 ## abc158_f(editor AC)
 
+
+# abc159
+
+## abc159_b(15min, AC)
+* string型の文字列の反転はこうする
+```c++
+reverse(rs.begin(), rs.end());
+```
+* string型の部分コピーはこうする
+```c++
+string fs = s.substr(0, (n-1)/2);
+```
 
 # Tips
 
