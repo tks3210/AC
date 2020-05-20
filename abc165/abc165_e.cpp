@@ -15,9 +15,29 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    int n, m;
+    cin >> n >> m;
+
+    vector<P> bat(m);
+
+
+    int itr_f = 1;
+    int itr_l = n;
+    int sw = 0;
+    rep(i, m){
+        bat[i].first = itr_f;
+        bat[i].second = itr_l-sw;
+        itr_f++;
+        itr_l--;
+        if(itr_l-itr_f <= n/2 && n%2 == 0){
+            sw = 1;
+        }
+    }
+
+    rep(i, m){
+        cout << bat[i].first << " " << bat[i].second << endl;
+    }
+
+
 }
 

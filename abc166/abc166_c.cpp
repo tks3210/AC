@@ -15,9 +15,32 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    int n, m;
+    cin >> n >> m;
+
+
+    vector<int> h(n);
+    rep(i, n){
+        cin >> h[i];
+    }
+
+    vector<bool> ans(n, true);
+    rep(i, m){
+        int a, b; cin >> a >> b;
+        a--; b--;
+        if (h[a] <= h[b]) ans[a] = false;
+        if (h[b] <= h[a]) ans[b] = false;
+    }
+
+
+
+    int cnt = 0;
+    rep(i, n){
+        if(ans[i]) cnt++;
+    }
+
+    cout << cnt << endl;
+
+
 }
 

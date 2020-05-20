@@ -15,9 +15,14 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    string s, t;
+    cin >> s >> t;
+
+    string tm =  t.substr(0, t.size()-1);
+    if (tm == s){
+        cout << "Yes" << endl;
+    } else {
+        cout << "No" << endl;
+    }
 }
 

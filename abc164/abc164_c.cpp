@@ -17,7 +17,14 @@ int main()
 {
     int n;
     cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    vector<string> s(n);
+    rep(i, n){ cin >> s[i];}
+
+    set<string> sset;
+ 
+    rep(i, n){sset.insert(s[i]);}
+
+    cout << sset.size() << endl;
+
 }
 

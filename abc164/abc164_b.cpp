@@ -15,9 +15,17 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+
+    int taka_num = (b+c-1)/b;
+    int aoki_num = (d+a-1)/d;
+
+    if (taka_num <= aoki_num) {
+        cout << "Yes" << endl;
+    } else {
+        cout << "No" << endl;
+    }
+
 }
 

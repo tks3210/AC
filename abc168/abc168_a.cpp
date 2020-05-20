@@ -17,7 +17,16 @@ int main()
 {
     int n;
     cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    int one = n%10;
+
+    if (one == 0 || one == 1 || one == 6 || one == 8){
+        cout << "pon" << endl;
+    } else if (one == 3){
+        cout << "bon" << endl;
+    } else {
+        cout << "hon" << endl;
+    }
+
+
 }
 

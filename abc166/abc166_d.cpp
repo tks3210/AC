@@ -12,12 +12,39 @@ typedef pair<ll, ll> llP;
 ll gcd(int x, int y){ return y?gcd(y, x%y):x;}
 ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
+ll calc(int x){
+    vector<ll> num(5, 0);
+    ll tmp = 1;
+    for (int i = 0; i < 5; i++)
+    {
+        tmp *= x;
+        num[i] = tmp;        
+    }
+    
+    ll ans = num[4];
+    return ans;
+}
+
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    ll x;
+    cin >> x;
+
+    //(a+1)^5 - (a)^5
+
+    for (int a = -240; a < 240; a++)
+    {
+        for (int b = -240; b < 240; b++)
+        {
+            if (calc(a)-calc(b) == x){
+                cout << a << " " << b << endl;
+                return 0;
+            }
+        }
+        
+    }
+    
+
 }
 

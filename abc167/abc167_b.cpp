@@ -15,9 +15,17 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    ll a, b, c, k;
+    cin >> a >> b >> c >> k;
+
+    ll ans = 0;
+    if (k <= a){
+        ans = k;
+    } else if (k > a+b) {
+        ans = a - (k-(a+b));
+    } else {
+        ans = a;
+    }
+    cout << ans << endl;
 }
 

@@ -1,7 +1,10 @@
 # Ex. powershell -ExecutionPolicy RemoteSigned .\makedir.ps1 abc123
 $contest_name = $Args[0]
-$dir_name = "training/" +$Args[0]
-#$dir_name = $Args[0]
+if ($Args[3] -eq 't') {
+    $dir_name = "training/" +$Args[0]
+} else {
+    $dir_name = $Args[0]
+}
 mkdir $dir_name
 $start = [byte][char]$Args[1]
 $end = [byte][char]$Args[2]

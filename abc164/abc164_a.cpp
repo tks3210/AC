@@ -15,9 +15,10 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    int s, w;
+    cin >> s >> w;
+
+    if (s <= w) cout << "unsafe" << endl;
+    else cout << "safe" << endl;
 }
 

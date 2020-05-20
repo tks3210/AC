@@ -18,6 +18,27 @@ int main()
     int n;
     cin >> n;
     vector<int> a;
+
+
     rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+
+    map<int, int> mp;
+
+    rep(i, n){
+        if (mp.find(a[i]-i) == mp.end()){
+            mp.insert({a[i]-i, 1});
+        } else {
+            mp[a[i]-i]++;
+        }
+    }
+
+    ll ans = 0;
+    rep(i, n){
+        mp[a[i]-i]--;
+
+        int key = -a[i]-i;
+        ans += mp[key];
+    }
+    cout << ans << endl;
 }
 

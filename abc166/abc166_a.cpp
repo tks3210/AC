@@ -15,9 +15,13 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a;
-    rep(i, n){ int tmp; cin >> tmp; a.push_back(tmp);}
+    string s;
+    cin >> s;
+    if (s == "ABC"){
+        cout << "ARC" << endl;
+    } else {
+        cout << "ABC" << endl;
+    }
+
 }
 
