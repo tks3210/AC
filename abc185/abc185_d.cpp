@@ -16,9 +16,38 @@ template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int n, m;
+    cin >> n >> m;
+    vector<int> a(m);
+    rep(i, m){ cin >> a[i]; }
+
+    sort(a.begin(), a.end());
+    //show(a);
+    int st = 1;
+    vector<int> sp;
+
+    
+    rep(i, m){
+        int tsp = a[i] - st;
+        if (tsp != 0) sp.push_back(tsp);
+        st = a[i]+1;
+    }
+    if (n+1-st != 0) sp.push_back(n+1-st);
+
+    //show(sp);
+
+    int minl = MOD;
+    //not care
+    if (sp.size() == 0) {cout << 0 << endl; return 0;}
+    rep(i, sp.size()){
+        chmin(minl, sp[i]);
+    }
+
+    int ans = 0;
+    rep(i, sp.size()){
+        ans += (sp[i] + minl - 1) / minl;
+    }
+
+    cout << ans << endl;
 }
 

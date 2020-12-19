@@ -14,11 +14,35 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 template<class T> inline bool chmax(T& a, T b) {if (a < b) {a = b; return true;} return false;}
 template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;} return false;}
 
+string janken(string t){
+    string ans = "";
+    rep(i, t.size()/2){
+        int l = i*2;
+        int r = i*2+1;
+        if ((t[l] == 'R' && t[r] == 'S')||(t[l] == 'S' && t[r] == 'P')||(t[l] == 'P' && t[r] == 'R')){
+            //l win
+            ans += t[l];
+        } else {
+            ans += t[r];
+        }
+    }
+    return ans;
+}
+
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int n, k;
+    string s;
+    cin >> n >> k;
+    cin >> s;
+
+    string t = s+s;
+    while(k!=0){
+        string tmp = janken(t);
+        t = tmp + tmp;
+        //cout << t << endl;
+        k--;
+    }
+    cout << t[0] << endl;
 }
 

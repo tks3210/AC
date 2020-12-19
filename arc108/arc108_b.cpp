@@ -14,11 +14,36 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 template<class T> inline bool chmax(T& a, T b) {if (a < b) {a = b; return true;} return false;}
 template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;} return false;}
 
+bool isfox(string s){
+    if (s.size() < 3) return false;
+    if (s[0] == 'f' && s[1] == 'o' && s[2] == 'x'){
+        return true;
+    } else {
+        return false;        
+    }
+}
+
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int N;
+    string s;
+    cin >> N >> s;
+
+    s = "V" + s + "V";
+    int itr = 0;
+    while(itr < s.size()){
+        string st = s.substr(itr, 3);
+        if (isfox(st)){
+            st = s.substr(0, itr) + s.substr(itr+3);
+            itr = max(itr-3, 0);
+            s = st; 
+        } 
+        //cout << s << endl;
+        itr++;
+    }
+
+    cout << s.size() - 2 << endl;
+
+
 }
 

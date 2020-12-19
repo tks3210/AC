@@ -16,9 +16,14 @@ template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int N;
+    string s;
+    cin >> N >> s;
+    string t = "";
+    rep(i, N){
+        t += s[i];
+        if (t.size() >= 3 && t.substr(t.size()-3) == "fox") t.erase(t.size()-3);
+    }
+    cout << t.size() << endl;
 }
 

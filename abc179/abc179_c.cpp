@@ -11,14 +11,32 @@ typedef pair<int, int> P;
 typedef pair<ll, ll> llP;
 ll gcd(int x, int y){ return y?gcd(y, x%y):x;}
 ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
-template<class T> inline bool chmax(T& a, T b) {if (a < b) {a = b; return true;} return false;}
-template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;} return false;}
+
+/*
+1 ~ N-1 の約数の合計
+*/
+
+
 
 int main()
 {
     int n;
     cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    // int ans = 0; 
+    // rep1(i, n-1){
+    //     set<int> a;
+    //     divisor(i, a);
+    //     ans += a.size();
+    // }
+    int ans = 0;
+    for (int a = 1; a < n; a++)
+    {
+        for (int b = 1; a*b < n ; b++)
+        {
+            ans++;        
+        }
+    }
+    
+    cout << ans << endl;
 }
 

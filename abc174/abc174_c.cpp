@@ -11,14 +11,28 @@ typedef pair<int, int> P;
 typedef pair<ll, ll> llP;
 ll gcd(int x, int y){ return y?gcd(y, x%y):x;}
 ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
-template<class T> inline bool chmax(T& a, T b) {if (a < b) {a = b; return true;} return false;}
-template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;} return false;}
+
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int k;
+    cin >> k;
+
+    if (k%2 == 0 || k%5 == 0) {
+        cout << "-1" << endl;
+        return 0;
+    }
+    
+
+    int l = 7;
+    int ans = 0;
+    while(1){
+        l %= k;
+        if (l == 0) break;
+        l *= 10;
+        l += 7;
+        ans++;
+    }
+    cout << ans+1 << endl;
 }
 

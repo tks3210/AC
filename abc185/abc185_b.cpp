@@ -16,9 +16,31 @@ template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int n, m, t;
+    cin >> n >> m >> t;
+    vector<P> ab(m);
+    rep(i, m){ cin >> ab[i].first >> ab[i].second; }
+
+
+    int time = 0;
+    int bat = n;
+    bool ans = true;
+    rep(i, m){
+        //touchaku
+        bat -= ab[i].first - time;
+        if (bat <= 0) {ans = false; break;}
+        //charge
+        bat += ab[i].second - ab[i].first;
+        time = ab[i].second;
+        chmin(bat, n);
+        //cout << bat << endl;
+    }
+    bat -= t - time;
+    //cout << bat << endl;
+    if (bat <= 0) {ans = false;}
+
+    if (ans) cout << "Yes" << endl;
+    else cout << "No" << endl;
+
 }
 

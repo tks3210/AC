@@ -16,9 +16,24 @@ template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;}
 
 int main()
 {
-    int n;
+    ll n;
     cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+
+    ll sum = 0;
+    ll l = 0;
+    ll r = 1e10;
+
+    while((r-l)>1){
+        ll m = (r+l)/2;
+        sum = m*(m+1)/2;
+        if (sum > n+1){
+            r = m;
+        } else {
+            l = m;
+        }   
+        //printf("%lld,%lld,%lld:%lld\n",l, r, m, sum);
+    }
+
+    cout << n-l+1 << endl;
 }
 

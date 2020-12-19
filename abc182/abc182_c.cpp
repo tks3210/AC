@@ -16,9 +16,42 @@ template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;}
 
 int main()
 {
-    int n;
+    string n;
     cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int keta = n.size();
+    vector<int> num(n.size(), 0);
+    rep(i, n.size()){
+        num[i] = n[i]-'0'; 
+    }
+
+    //show(num);
+
+    ll sum = 0;
+    rep(i, num.size()) sum += num[i];
+    int kesu = sum%3;
+
+    if (kesu == 0) {
+        cout << 0 << endl;
+        return 0;
+    }
+
+    vector<int> num_sum(keta+1, 0);
+    rep(i, keta) num_sum[i+1] = num_sum[i] + num[i];
+
+    rep1(i, keta){
+        if (i == keta) {
+            cout << -1 << endl;
+            return 0;
+        }
+        for (int j = 0; j + i <= keta; j++)
+        {
+            if ((num_sum[j+i]-num_sum[j])%3 == kesu){
+                //cout << i << i+j << endl;
+                cout << i << endl;
+                return 0;
+            }
+        }
+    }
+
 }
 

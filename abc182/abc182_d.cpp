@@ -18,7 +18,30 @@ int main()
 {
     int n;
     cin >> n;
-    vector<int> a(n);
+    vector<ll> a(n);
     rep(i, n){ cin >> a[i]; }
+
+    vector<ll> maxlen(n);
+    vector<ll> lastlen(n);
+
+    ll maxtmp = -1e9;
+    ll sum = 0;
+    rep(i, n){
+        sum += a[i];
+        chmax(maxtmp, sum);
+        maxlen[i] = maxtmp;
+        lastlen[i] = sum; 
+    }
+
+    //show(maxlen);
+    //show(lastlen);
+
+    ll ans = 0;
+    ll lsum = 0;
+    rep(i, n){
+        chmax(ans, lsum+maxlen[i]);
+        lsum += lastlen[i];
+    }
+    cout << ans << endl;
 }
 

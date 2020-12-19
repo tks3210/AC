@@ -14,11 +14,36 @@ ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
 template<class T> inline bool chmax(T& a, T b) {if (a < b) {a = b; return true;} return false;}
 template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;} return false;}
 
+template<class X> void divisor(X input, vector<X>& Dnumber){
+    for (X i = 1; i*i <= input; i++)
+    {
+        if (input % i == 0){
+            Dnumber.push_back(i);
+            if (i * i  != input) Dnumber.push_back(input / i);
+        }
+    }
+    sort(Dnumber.begin(), Dnumber.end());
+}
+
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    ll s, p;
+    cin >> s >> p;
+
+    vector<ll> div;
+    divisor(p, div);
+
+    //show(div);
+    rep(i, div.size()){
+        ll a = div[i];
+        ll b = p/a;
+        if (a+b==s){
+            cout << "Yes" << endl;
+            return 0;
+        }
+    }
+
+    cout << "No" << endl;
+
 }
 

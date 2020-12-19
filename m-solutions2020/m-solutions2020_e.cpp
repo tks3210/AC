@@ -11,8 +11,18 @@ typedef pair<int, int> P;
 typedef pair<ll, ll> llP;
 ll gcd(int x, int y){ return y?gcd(y, x%y):x;}
 ll lcm(ll x, ll y){ return (x*y)/gcd(x,y);}
-template<class T> inline bool chmax(T& a, T b) {if (a < b) {a = b; return true;} return false;}
-template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;} return false;}
+
+/*
+確実に線路は街を通る
+全探索はK=10あたりから厳しくなる
+迷惑掛けてる度で定量化？位置を評価できない
+一つ敷く場合と二つ敷く場合で組み合わせが違う
+
+DP？
+
+
+
+*/
 
 int main()
 {

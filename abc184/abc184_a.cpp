@@ -16,9 +16,9 @@ template<class T> inline bool chmin(T& a, T b) {if (a > b) {a = b; return true;}
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    rep(i, n){ cin >> a[i]; }
+    int a,b,c,d;
+    cin >> a >>b >>c >> d;
+
+    cout << a*d - b*c << endl;
 }
 
